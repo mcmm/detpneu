@@ -14,7 +14,7 @@ int main() {
  //int step = vi.get(CV_CAP_PROP_FRAME_COUNT)/total_frames; //distancia necessaria para pegar 10 quadros
  int num_frames = 0;
  
- while (true) {
+ 
  	for(int aux = 0; aux < total_frames; aux+=150){ //deseja-se pegar 10 quadros
  		 //cria  matriz colorida para salvar quadros
  		Mat_<COR> a;
@@ -31,5 +31,5 @@ int main() {
  		imp(a, label);
  		num_frames +=1;
  	}
- }
+ 
 } 
