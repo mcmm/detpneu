@@ -1,6 +1,14 @@
 #include <cekeikon.h>
 #include <sstream> //biblioteca do opencv para converter float para string
 
+
+//Função canny utilizada para detectar arestas
+Mat_<GRY> canny(Mat_<GRY> a)
+{ Mat_<GRY> b;
+ Canny(a, b, 160, 70);
+ return b;
+}
+
 int main() {
 
 	//Lê vídeo desejado em vi
@@ -17,9 +25,9 @@ int main() {
  
  	for(int aux = 0; aux < total_frames; aux+=150){ //deseja-se pegar 10 quadros
  		 //cria  matriz colorida para salvar quadros
- 		Mat_<COR> a;
+ 		Mat_<GRY> frame;
  		vi.set(CV_CAP_PROP_POS_FRAMES, aux); //VideoCapture::set set the index to the next frame to be captured
- 		vi >> a; // pega o proximo quadro do video
+ 		vi >> frame; // pega o proximo quadro do video
  		
 
  		//Para pegar o índice do quadro e salvar no nome da imagem
@@ -27,8 +35,14 @@ int main() {
 		ss << num_frames;
 		std::string i = ss.str();
 		std::string label = "gera_quad"+i+".jpg"; //concatena strings para salvar o nome certo
+		std::string label_canny = "canny"+i+".jpg"; //concatena strings para salvar o nome certo
  		
- 		imp(a, label);
+ 		imp(frame, label); //salva os quadros gerados
+ 		
+ 		//Chama a função canny para detectar arestas
+ 		Mat_<GRY> canny_frame=canny(frame);
+ 		imp(canny_frame, label_canny);
+
  		num_frames +=1;
  	}
  
