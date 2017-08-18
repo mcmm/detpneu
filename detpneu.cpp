@@ -7,16 +7,29 @@ int main() {
  VideoCapture vi("teste.avi");
  if (!vi.isOpened()) erro("Erro abertura video entrada");
 
- //cria  matriz colorida para salvar quadros
- Mat_<COR> a;
- 
- int total_frames = 10; //numero total de quadros
- int step = vi.get(CV_CAP_PROP_FRAME_COUNT)/total_frames; //distancia necessaria para pegar 10 quadros
+ //Link de referência:
+ //http://answers.opencv.org/question/5768/how-can-i-get-one-single-frame-from-a-video-file/
+
+ int total_frames = vi.get(CV_CAP_PROP_FRAME_COUNT); //numero total de quadros
+ //int step = vi.get(CV_CAP_PROP_FRAME_COUNT)/total_frames; //distancia necessaria para pegar 10 quadros
+ int num_frames = 0;
  
  while (true) {
- 	for(int num_frames = 0; num_frames < total_frames; num_frames++){
+ 	for(int aux = 0; aux < total_frames; aux+=150){ //deseja-se pegar 10 quadros
+ 		 //cria  matriz colorida para salvar quadros
+ 		Mat_<COR> a;
+ 		vi.set(CV_CAP_PROP_POS_FRAMES, aux); //VideoCapture::set set the index to the next frame to be captured
  		vi >> a; // pega o proximo quadro do video
- 		imp(a, "quad.jpg");
+ 		
+
+ 		//Para pegar o índice do quadro e salvar no nome da imagem
+ 		std::stringstream ss;
+		ss << num_frames;
+		std::string i = ss.str();
+		std::string label = "gera_quad"+i+".jpg"; //concatena strings para salvar o nome certo
+ 		
+ 		imp(a, label);
+ 		num_frames +=1;
  	}
  }
 } 
