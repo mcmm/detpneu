@@ -7,11 +7,11 @@
 	//última página
 Mat_<GRY> canny(Mat_<GRY> a)
 { Mat_<GRY> b;
- Canny(a, b, 160, 70);
+ Canny(a, b,200, 100);
  return b;
 }
 
-int main() {
+int main(int argc, char** argv) {
 
 	//Para capturar quadros (referências):
 		//apostila "video.pdf"
@@ -56,5 +56,5 @@ int main() {
 
  		num_frames +=1;
  	}
+}
  
-} 
