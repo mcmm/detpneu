@@ -3,46 +3,54 @@
 	//gradieng.cpp
 #include <cekeikon.h>
 int main(int argc, char** argv) {
- if (argc!=3 && argc!=4) {
+ /*if (argc!=3 && argc!=4) {
  printf("GradienG: Calcula gradiente de Mat_<GRY> como Mat_<CPX>\n");
  printf("GradienG ent.pgm sai.img [gaussDev]\n");
  xerro1("Erro: Numero de argumentos invalido");
- }
+ } */
  	//aplica o filtro gaussiano e deixa usando brilho como magnitude e cor
 		//como direção do gradiente. A direção do gradiente é mais ou menos constante numa aresta.
- Mat_<GRY> a;
- le(a,argv[1]);
- if (argc==4) {
+ Mat_<COR> a;
+ le(a,"fillcircle.png");
+
+ //Dividir a imagem em componentes rgb
+Mat_<COR> red(a.rows, a.cols);
+Mat_<COR> blue(a.rows, a.cols);
+Mat_<COR> green(a.rows, a.cols);
+
+for(int l=0; l<a.rows; l++){
+	for(int c=0; c<a.cols; c++){
+		red(l,c) = COR(0, 0, a(l,c)[2]);
+		green(l,c) = COR(0, a(l,c)[1], 0); 
+		blue(l,c) = COR(a(l,c)[0], 0, 0);
+	}
+}
+
+//aplicar o gradiente  	
+
  double gaussDev;
- convArg(gaussDev,argv[3]);
- GaussianBlur(a,a,Size(0,0),gaussDev,gaussDev);
- }
- Mat_<CPX> b=gradienteScharr(a,true); // true=y para cima
- imp(b,argv[2]);
-}
+ int desvio =2; //2 é o desvio Gaussiano (tirado da apostila)
+ convArg(gaussDev,argv[1]); 
+
+ GaussianBlur(a,a,Size(10,10),gaussDev,gaussDev);
+ Mat_<CPX> a_cpx=gradienteScharr(a,true); // true=y para cima
+ imp(a_cpx,"a_cpx.png");
+
 /*
-//<<<<<<<< Função gradienteScharr (incluído na Cekeikon > 5.26) <<<<<<<<<
-Mat_<CPX> criaCPX(Mat_<FLT> dc, Mat_<FLT> dl)
-{ if (dc.size()!=dl.size()) erro("Erro criaCPX");
- Mat_<CPX> b(dc.size());
- for (unsigned i=0; i<b.total(); i++)
- b(i)=CPX( dc(i), dl(i) );
- return b;
-}
-Mat_<CPX> gradienteScharr(Mat_<GRY> a, bool yParaCima)
-// x ->
-// y |
-// V
-{ Mat_<FLT> gradientex;
- Scharr(a, gradientex, CV_32F, 1, 0);
- // gradientex entre -4080 e +4080 (255*16)?
- gradientex=(1.0/4080)*gradientex;
- Mat_<FLT> gradientey;
- Scharr(a, gradientey, CV_32F, 0, 1);
- // bl entre -4080 e +4080?
- if (yParaCima) gradientey=(-1.0/4080)*gradientey;
- else gradientey=(1.0/4080)*gradientey;
- Mat_<CPX> b=criaCPX(gradientex,gradientey);
- return b; // b.real entre -1 e +1. b.imag tambem
-}
-*/
+ //calcula o gradiente de cada componente da imagem
+ 	//red
+ GaussianBlur(red,red,Size(0,0),gaussDev,gaussDev);
+ Mat_<CPX> red_cpx=gradienteScharr(red,true); // true=y para cima
+ imp(red_cpx,"red_cpx.png");
+
+ 	//green
+ GaussianBlur(green,green,Size(0,0),gaussDev,gaussDev);
+ Mat_<CPX> green_cpx=gradienteScharr(green,true); // true=y para cima
+ imp(green_cpx,"green_cpx.png");
+
+  	//blue
+ GaussianBlur(blue,blue,Size(0,0),gaussDev,gaussDev);
+ Mat_<CPX> blue_cpx=gradienteScharr(blue,true); // true=y para cima
+ imp(blue_cpx,"blue_cpx.png"); */
+ 
+}	
