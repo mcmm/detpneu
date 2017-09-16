@@ -1,6 +1,9 @@
 #include <cekeikon.h>
 
 int main(int argc, char** argv) {
+ double ti, tf, time; //variáveis para medir tempo inicial e final
+ti =getTickCount(); //tempo inicial
+
  if (argc!=3 && argc!=4) {
  printf("Gradiente: Calcula gradiente de Mat_<COR> como Mat_<CPX>\n");
  printf("GradienG ent.pgm sai.img [gaussDev]\n");
@@ -69,8 +72,12 @@ cvtColor(green,green_gry,CV_BGR2GRAY);
  }
 
  Mat_<COR> gradc = campox(gradiente, 31, 15);
- imp(gradc,argv[2]);
+ imp(gradiente,argv[2]);
 
+	
+	tf =getTickCount(); //tempo final
+	time = (tf - ti)/getTickFrequency();
+	printf("%fs para executar",time);
 
 
 }

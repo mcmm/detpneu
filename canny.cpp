@@ -6,7 +6,7 @@
 	//última página
 Mat_<GRY> canny(Mat_<GRY> a)
 { Mat_<GRY> b;
- Canny(a, b,200, 100);
+ Canny(a, b,400, 200);
  return b;
 }
 
