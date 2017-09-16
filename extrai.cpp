@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
 
  int total_frames = vi.get(CV_CAP_PROP_FRAME_COUNT); //numero total de quadros
  int num_frames = 0; //variavel que guarda número de quadros
- int passo = total_frames/10;
+ int passo = total_frames/50;
 
  	for(int aux = 0; aux < total_frames; aux+=passo){ //deseja-se percorrer todas as frames, 
  													//adiciona-se 150 para pegar mais ou menos 10 quadros
