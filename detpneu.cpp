@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
 
 
 int total_frames = vi.get(CV_CAP_PROP_FRAME_COUNT); //numero total de quadros
-int passo = 5;
+int passo = 1;
 int terminar=0;
 while(true){
  		if (terminar>= total_frames) break;
@@ -123,8 +123,8 @@ while(true){
 		}
 
 
-		double limiar_min = (0.2*maior_modulo); 
-		double limiar_max = (0.4*maior_modulo); 
+		double limiar_min = (0.1*maior_modulo); 
+		double limiar_max = (0.2*maior_modulo); 
 		//xdebug;
 
 		for(int l=0; l<gradiente.rows; l++){
@@ -140,8 +140,8 @@ while(true){
 			}
 		}
 
-		int rmin = 50;
-		int rmax = 70;
+		int rmin = 45;
+		int rmax = 68;
 		int nl=hougrad.rows;
 		int nc=hougrad.cols;
 		int ns=rmax-rmin+1;
@@ -166,30 +166,43 @@ while(true){
 		int num_escuros =5;
 		int num_escuros_atual=0;
 		int melhor_raio;
+		int lado_janela = 20;
+		int dimensao = (lado_janela*lado_janela);
+		float soma;
+		float media;
 
 		for(int i=0; i<sai.size(); i++){
 			num_escuros_atual =0;
     		normalize( sai[i], sai[i], 0, 1, NORM_MINMAX, -1, Mat() ); // Normalizes the norm or value range of an array.
-   		for (int l=0; l<nl; l++){
- 			for (int c=0; c<nc; c++){
+   		for (int l=lado_janela/2; l<nl-lado_janela/2; l++){
+ 			for (int c=lado_janela/2; c<nc-lado_janela/2; c++){
  				//printf("pixel: %f\n", sai[i](l,c));
- 				if(l!=0&&c!=0&&l!=nl&&c!=nc){ //para não pegar fora da imagem
- 					if(sai[i](l,c)==0) { 
-
- 						num_escuros_atual+=1;
+ 				//if(l!=0&&c!=0&&l!=nl&&c!=nc){ //para não pegar fora da imagem
+ 					if(sai[i](l,c)==0) {
+ 						soma=0;
+ 						for(int l_janela = l-lado_janela/2; l_janela<l+lado_janela/2; l_janela++){
+ 							for(int c_janela = c-lado_janela/2; c_janela<c+lado_janela/2; c_janela++){
+ 								soma += sai[i](l_janela, c_janela);
+ 							}
+ 						}
+ 						media = soma/dimensao;
+ 						if (media > 0.7){
+ 							num_escuros_atual+=1;
+ 							//printf("MEDIA %f\n", media);
+ 						}
  						//printf("ptos escuros: %d\n, num_escuros_atual");
  					}
- 				}
+ 				//}
  			}
  		}
- 			if (num_escuros_atual<num_escuros)
+ 			if (num_escuros_atual==1)
  			{
  				num_escuros = num_escuros_atual;
  				melhor_raio = i;
  			}
  		}
 
-		if(num_escuros < 5){
+		if(num_escuros ==1 && melhor_raio != rmin && melhor_raio!= rmax){
 			int  centro_l=0;
 			int centro_c =0;
 			float centro =1;

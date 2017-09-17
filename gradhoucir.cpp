@@ -96,8 +96,8 @@ for(int l=0; l<gradiente.rows; l++){
 }
 
 
-double limiar_min = (0.2*maior_modulo); 
-double limiar_max = (0.4*maior_modulo); 
+double limiar_min = (0.1*maior_modulo); 
+double limiar_max = (0.2*maior_modulo); 
 //xdebug;
 
 for(int l=0; l<gradiente.rows; l++){
@@ -113,7 +113,7 @@ for(int l=0; l<gradiente.rows; l++){
 	}
 }
 
-int rmin = 40;
+int rmin = 45;
 int rmax = 80;
 int nl=hougrad.rows;
 int nc=hougrad.cols;
@@ -136,7 +136,7 @@ int ns=rmax-rmin+1;
  }
 imp(hougrad, "hougrad.png");
 
- int num_escuros =10;
+ int num_escuros =5;
  int num_escuros_atual=0;
  int melhor_raio;
 
@@ -147,7 +147,7 @@ for(int i=0; i<sai.size(); i++){
  	for (int c=0; c<nc; c++){
  		//printf("pixel: %f\n", sai[i](l,c));
  		if(l!=0&&c!=0&&l!=nl&&c!=nc){ //para não pegar fora da imagem
- 			if(sai[i](l,c)<0.3) { 
+ 			if(sai[i](l,c)<0.2) { 
 
  				num_escuros_atual+=1;
  				//printf("ptos escuros: %d\n, num_escuros_atual");
